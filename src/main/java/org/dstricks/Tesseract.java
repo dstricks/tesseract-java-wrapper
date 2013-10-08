@@ -3,6 +3,8 @@ package org.dstricks;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -36,12 +38,18 @@ public class Tesseract {
 		
 		String id = UUID.randomUUID().toString();
 		
-		Process p;
-		if(language == null) {
-			p = new ProcessBuilder(tesseractPath, imagename, id).start();
-		} else {
-			p = new ProcessBuilder(tesseractPath, imagename, id, "-l " + language).start();
+		List<String> args = new ArrayList<String>();
+		args.add(tesseractPath);
+		args.add(imagename);
+		args.add(id);
+
+		if(language != null) {
+			args.add("-l " + language);
 		}
+
+		ProcessBuilder builder = new ProcessBuilder(args);
+		Process p = builder.start();
+
 		p.waitFor();
 		
 		// TODO: check whether the file exists or not... if not then no text was extracted??
@@ -53,17 +61,13 @@ public class Tesseract {
 	}
 	
 	public static String process(InputStream image) throws IOException, InterruptedException {
-		// TODO: write the InputStream to the file system
 		File tempFile = File.createTempFile("tesseract_", ".tmp");
 		FileUtils.copyInputStreamToFile(image, tempFile);
 		
-		// TODO: ocr the file
 		String text = process(tempFile.getPath());
 		
-		// TODO: delete the file
 		tempFile.delete();
-		
-		
+
 		return text;
 	}
 }

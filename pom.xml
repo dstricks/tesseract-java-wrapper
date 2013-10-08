@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.dstricks</groupId>
   <artifactId>tesseract-java-wrapper</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>Tesseract Java Wrapper</name>
   <description>A simple Java wrapper for the Tesseract command line tool</description>
   <dependencies>
