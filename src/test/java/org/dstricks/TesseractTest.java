@@ -24,7 +24,15 @@ public class TesseractTest {
 	public void asciiSentenceTest() throws Exception {
 		String expected = "Happy New Year 2003!";
 		String actual = Tesseract.process("src/test/resources/asciiSentence.png").trim();
-		assertEquals("digits.jpg was not read properly",  expected, actual);
+		assertEquals("asciiSentence.png was not read properly",  expected, actual);
+	}
+	
+	@Test
+	public void noTextImageTest() throws IOException, InterruptedException {
+		String expected = "";
+		String actual = Tesseract.process("src/test/resources/testJPEG.jpg").trim();
+		
+		assertEquals("testJPEG.jpg was not read properly",  expected, actual);
 	}
 	
 	@Test
@@ -36,10 +44,10 @@ public class TesseractTest {
 	}
 	
 	@Test
-	public void noTextImageTest() throws IOException, InterruptedException {
+	public void digitsInputStreamNoTextTest() throws IOException, InterruptedException {
 		String expected = "";
-		String actual = Tesseract.process("src/test/resources/testJPEG.jpg").trim();
-		
+		FileInputStream fis = new FileInputStream(new File("src/test/resources/testJPEG.jpg"));
+		String actual = Tesseract.process(fis).trim();
 		assertEquals("testJPEG.jpg was not read properly",  expected, actual);
 	}
 
