@@ -97,6 +97,26 @@ public class Tesseract {
 	}
 	
 	/**
+	 * OCR the <code>imageStream</code> using the language pack
+	 * that corresponds to passed in <code>langCode</code>.
+	 *
+	 * @param imageStream the image as an InputStream
+	 * @param langCode Tesseract-specific language code to use for OCR (ex. eng)
+	 * @return Any text that was extracted, or empty String if no text was extracted
+	 * @throws IOException if the system doesn't have access to create temporary files
+	 */
+	public static String process(InputStream imageStream, String langCode) throws IOException {
+		File tempFile = File.createTempFile("tesseract_", ".tmp");
+		FileUtils.copyInputStreamToFile(imageStream, tempFile);
+		
+		String text = process(tempFile.getPath(), langCode);
+		
+		tempFile.delete();
+
+		return text;
+	}
+	
+	/**
 	 * OCR the <code>bufferedImage</code> using the English language pack.
 	 * 
 	 * @param bufferedImage the image as a BufferedImage
@@ -111,6 +131,28 @@ public class Tesseract {
 		ImageIO.write(bufferedImage, formatName, temp);
 		
 		text = process(temp.getAbsolutePath());
+		temp.delete();
+		
+		return text;
+	}
+	
+	/**
+	 * OCR the <code>bufferedImage</code> using  the language pack
+	 * that corresponds to passed in <code>langCode</code>.
+	 * 
+	 * @param bufferedImage the image as a BufferedImage
+	 * @param formatName name of the Image format-- ex. "jpg" (see {@link ImageIO.getReaderFormatNames();})
+	 * @param langCode Tesseract-specific language code to use for OCR (ex. eng)
+	 * @return Any text that was extracted, or empty String if no text was extracted
+	 * @throws IOException if the system doesn't have access to create temporary files
+	 */
+	public static String process(BufferedImage bufferedImage, String formatName, String langCode) throws IOException {
+		String text = "";
+
+		File temp = File.createTempFile("tesseract_", ".tmp");
+		ImageIO.write(bufferedImage, formatName, temp);
+		
+		text = process(temp.getAbsolutePath(), langCode);
 		temp.delete();
 		
 		return text;
