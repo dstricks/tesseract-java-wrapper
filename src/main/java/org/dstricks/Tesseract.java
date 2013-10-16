@@ -36,8 +36,11 @@ public class Tesseract {
 	}
 	
 	public static String process(String imagename, String language) throws IOException, InterruptedException {
-		// TODO: throw an exception or something if tesseract isn't set as a system property properly
 		String tesseractPath = System.getProperty("tesseract");
+		
+		if(tesseractPath == null) {
+			throw new UnsupportedOperationException("Required 'tesseract' system variable not set");
+		}
 		
 		String id = UUID.randomUUID().toString();
 		
