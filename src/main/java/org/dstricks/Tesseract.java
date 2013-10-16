@@ -1,11 +1,14 @@
 package org.dstricks;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 
@@ -68,6 +71,18 @@ public class Tesseract {
 		
 		tempFile.delete();
 
+		return text;
+	}
+	
+	public static String process(BufferedImage image, String type) throws IOException, InterruptedException {
+		String text = "";
+
+		File temp = File.createTempFile("tesseract_", ".tmp");
+		ImageIO.write(image, type, temp);
+		
+		text = process(temp.getAbsolutePath());
+		temp.delete();
+		
 		return text;
 	}
 }

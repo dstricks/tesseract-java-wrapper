@@ -3,10 +3,13 @@ package org.dstricks;
 
 import static org.junit.Assert.*;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Test;
 
@@ -50,5 +53,13 @@ public class TesseractTest {
 		String actual = Tesseract.process(fis).trim();
 		assertEquals("testJPEG.jpg was not read properly",  expected, actual);
 	}
-
+	
+	@Test
+	public void testBufferedImage() throws IOException, InterruptedException {
+		File imgFile = new File("src/test/resources/digits.jpg");
+		BufferedImage img = ImageIO.read(imgFile);
+		String expected = "0123456789";
+		String actual = Tesseract.process(img, "jpg").trim();
+		assertEquals("digits.jpg was not read properly",  expected, actual);
+	}
 }
