@@ -31,11 +31,11 @@ pagesegmode values are:
  *
  */
 public class Tesseract {
-	public static String process(String imagename) throws IOException, InterruptedException {
+	public static String process(String imagename) throws IOException {
 		return process(imagename, null);
 	}
 	
-	public static String process(String imagename, String language) throws IOException, InterruptedException {
+	public static String process(String imagename, String language) throws IOException {
 		String tesseractPath = System.getProperty("tesseract");
 		
 		if(tesseractPath == null) {
@@ -56,7 +56,11 @@ public class Tesseract {
 		ProcessBuilder builder = new ProcessBuilder(args);
 		Process p = builder.start();
 
-		p.waitFor();
+		try {
+			p.waitFor();
+		} catch (InterruptedException e) {
+			// continue on, trying to read what is available
+		}
 		
 		// TODO: check whether the file exists or not... if not then no text was extracted??
 		File result = new File(id + ".txt");
@@ -66,7 +70,7 @@ public class Tesseract {
 		return text;
 	}
 	
-	public static String process(InputStream image) throws IOException, InterruptedException {
+	public static String process(InputStream image) throws IOException {
 		File tempFile = File.createTempFile("tesseract_", ".tmp");
 		FileUtils.copyInputStreamToFile(image, tempFile);
 		
@@ -77,7 +81,7 @@ public class Tesseract {
 		return text;
 	}
 	
-	public static String process(BufferedImage image, String type) throws IOException, InterruptedException {
+	public static String process(BufferedImage image, String type) throws IOException {
 		String text = "";
 
 		File temp = File.createTempFile("tesseract_", ".tmp");
