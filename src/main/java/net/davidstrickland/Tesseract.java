@@ -1,4 +1,4 @@
-package org.dstricks;
+package net.davidstrickland;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

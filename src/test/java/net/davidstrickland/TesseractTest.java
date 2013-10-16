@@ -1,4 +1,4 @@
-package org.dstricks;
+package net.davidstrickland;
 
 
 import static org.junit.Assert.*;
